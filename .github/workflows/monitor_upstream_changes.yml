@@ -17,14 +17,17 @@ jobs:
         run: |
           curl -sL https://api.github.com/repos/tme-test-org/tme-cb-1/releases/releases/latest | \
           jq -r ".tag_name" > test.txt
+      - name: Show downloaded content
+        run: |
+          echo test.txt
       # - name: Check for modified files
       #   id: git-check
       #   run: echo ::set-output name=modified::$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")
-      - name: Commit latest release version
-        # if: steps.git-check.outputs.modified == 'true'
-        run: |
-          git config --global user.name 'Your Name'
-          git config --global user.email 'your-email@users.noreply.github.com'
-          git commit -am "New release version"
-          git push
+      # - name: Commit latest release version
+      #   # if: steps.git-check.outputs.modified == 'true'
+      #   run: |
+      #     git config --global user.name 'Your Name'
+      #     git config --global user.email 'your-email@users.noreply.github.com'
+      #     git commit -am "New release version"
+      #     git push
 
