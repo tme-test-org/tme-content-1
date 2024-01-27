@@ -1,7 +1,7 @@
 name: Check for upstream changes
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/5 * * * *" #Run check every 5 minutes
   repository_dispatch:
     types: [coda-action] #Manual triggered from Coda
 
@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: JasonEtco/create-an-issue@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      # - uses: JasonEtco/create-an-issue@v2
       - name: Fetch release version
         run: |
           curl -sL https://api.github.com/repos/tme-test-org/tme-cb-1/releases/releases/latest | \
