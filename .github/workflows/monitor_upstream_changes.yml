@@ -31,6 +31,10 @@ jobs:
           test -f .github/upstream_versions/cb.txt && echo "cb-exists=true" >> $GITHUB_OUTPUT
           echo "ctb-exists=false" >> $GITHUB_OUTPUT
           test -f .github/upstream_versions/ctb.txt && echo "ctb-exists=true" >> $GITHUB_OUTPUT
+          git config --global user.name 'Automated Script'
+          git config --global user.email 'your-email@users.noreply.github.com'
+          git commit -am "Create upstream version files."
+          git push
       
       - name: Create cb version file if does not yet exist
         if: steps.check-versions-set.outputs.cb-exists == 'false'
