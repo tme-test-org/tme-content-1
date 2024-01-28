@@ -13,23 +13,33 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Test env vars
+        run: |
+          echo "Org name: $ORG_NAME"
+          echo "CB: $CB"
+          echo "CTB: $CTB"
+
       - name: Check upstream versions set
         id: check-versions-set
         run: |
-          echo ::set-output name=cb-exists::false
-          test -f .github/upstream_versions/cb.txt && echo ::set-output name=cb-exists::true
-          echo ::set-output name=ctb-exists::false
-          test -f .github/upstream_versions/ctb.txt && echo ::set-output name=ctb-exists::true
+          echo "cb-exists=false" >> $GITHUB_OUTPUT
+          test -f .github/upstream_versions/cb.txt && echo "cb-exists=true" >> $GITHUB_OUTPUT
+          echo "ctb-exists=false" >> $GITHUB_OUTPUT
+          test -f .github/upstream_versions/ctb.txt && echo "ctb-exists=true" >> $GITHUB_OUTPUT
       
-      - name: Create cb version file
+      - name: Create cb version file if does not yet exist
         if: steps.check-versions-set.outputs.cb-exists == 'false'
         run: |      
           echo "CB version file does not exist."
+          curl -sL https://api.github.com/repos/tme-test-org/tme-cb-1/releases/latest | \
+          jq -r ".tag_name" > .github/upstream_versions/cb.txt
 
-      - name: Create ctb version file
+      - name: Create ctb version file if does not yet exist
         if: steps.check-versions-set.outputs.ctb-exists == 'false'
         run: |      
-          echo "CTB version file does not exist."   
+          echo "CTB version file does not exist."
+          curl -sL https://api.github.com/repos/tme-test-org/tme-ctb-1/releases/latest | \
+          jq -r ".tag_name" > .github/upstream_versions/ctb.txt
 
       - name: Fetch release version
         run: |
