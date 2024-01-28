@@ -23,14 +23,16 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.ref_name }}
 
-      - name: Check upstream versions set
-        id: check-versions-set
+      - name: Initialize upstream checking
+        id: initialize
         run: |
           test -f .github/upstream_versions/cb.txt && echo "cb-exists=true" >> $GITHUB_OUTPUT || echo "cb-exists=false" >> $GITHUB_OUTPUT
           test -f .github/upstream_versions/ctb.txt && echo "ctb-exists=true" >> $GITHUB_OUTPUT || echo "ctb-exists=false" >> $GITHUB_OUTPUT
+          test -f .github/upstream_versions/cb-change-detected.txt && echo "cb-change-flag-set=true" >> $GITHUB_OUTPUT || echo "cb-change-flag-set=false" >> $GITHUB_OUTPUT
+          test -f .github/upstream_versions/ctb-change-detected.txt && echo "ctb-change-flag-set=true" >> $GITHUB_OUTPUT || echo "ctb-change-flag-set=false" >> $GITHUB_OUTPUT
       
       - name: Create cb version file if does not yet exist
-        if: steps.check-versions-set.outputs.cb-exists == 'false'
+        if: steps.initialize.outputs.cb-exists == 'false'
         run: |      
           echo "CB version file does not exist."
           curl -sL https://api.github.com/repos/$ORG_NAME/$CB/releases/latest | jq -r ".tag_name" > .github/upstream_versions/cb.txt
@@ -40,7 +42,7 @@ jobs:
           git push          
 
       - name: Create ctb version file if does not yet exist
-        if: steps.check-versions-set.outputs.ctb-exists == 'false'
+        if: steps.initialize.outputs.ctb-exists == 'false'
         run: |      
           echo "CTB version file does not exist."
           curl -sL https://api.github.com/repos/$ORG_NAME/$CTB/releases/latest | jq -r ".tag_name" > .github/upstream_versions/ctb.txt
@@ -58,7 +60,7 @@ jobs:
           echo ctb-upstream-version=$(curl -sL https://api.github.com/repos/$ORG_NAME/$CTB/releases/latest | jq -r ".tag_name") >> $GITHUB_OUTPUT
 
       - name: CB upstream changes
-        if: steps.version-compare.outputs.cb-repo-version != steps.version-compare.outputs.cb-upstream-version
+        if: steps.version-compare.outputs.cb-repo-version != steps.version-compare.outputs.cb-upstream-version && !steps.initialize.outputs.cb-change-flag-set
         run: |
             echo "New CB version upstream!"
             echo "Set some flag (JIRA? Issue?)"
@@ -66,10 +68,10 @@ jobs:
             touch .github/upstream_versions/cb-change-detected.txt
             git add .github/upstream_versions/cb-change-detected.txt
             git commit -m "Set change detected in CB flag."
-            git push    
+            git push
 
       - name: CTB upstream changes
-        if: steps.version-compare.outputs.ctb-repo-version != steps.version-compare.outputs.ctb-upstream-version
+        if: steps.version-compare.outputs.ctb-repo-version != steps.version-compare.outputs.ctb-upstream-version && !steps.initialize.outputs.ctb-change-flag-set
         run: |
           echo "New CTB version upstream!"
           echo "Set some flag (JIRA? Issue?)"
