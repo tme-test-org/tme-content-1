@@ -24,9 +24,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.ref_name }}
 
       - name: Update upstream versions and remove update flag
-        id: check-versions-set
         run: |
           curl -sL https://api.github.com/repos/$ORG_NAME/$CB/releases/latest | jq -r ".tag_name" > .github/upstream_versions/cb.txt
           curl -sL https://api.github.com/repos/$ORG_NAME/$CTB/releases/latest | jq -r ".tag_name" > .github/upstream_versions/ctb.txt
