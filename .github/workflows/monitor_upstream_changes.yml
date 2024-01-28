@@ -23,8 +23,6 @@ jobs:
           echo "Org name: $ORG_NAME"
           echo "CB: $CB"
           echo "CTB: $CTB"
-        env:
-          CBT: ${{ vars.CBT }}    
 
       - name: Check upstream versions set
         id: check-versions-set
@@ -38,22 +36,22 @@ jobs:
         if: steps.check-versions-set.outputs.cb-exists == 'false'
         run: |      
           echo "CB version file does not exist."
-          curl -sL https://api.github.com/repos/tme-test-org/tme-cb-1/releases/latest | \
+          curl -sL https://api.github.com/repos/$ORG_NAME/$CB/releases/latest | \
           jq -r ".tag_name" > .github/upstream_versions/cb.txt
 
       - name: Create ctb version file if does not yet exist
         if: steps.check-versions-set.outputs.ctb-exists == 'false'
         run: |      
           echo "CTB version file does not exist."
-          curl -sL https://api.github.com/repos/tme-test-org/tme-ctb-1/releases/latest | \
+          curl -sL https://api.github.com/repos/$ORG_NAME/$CTB/releases/latest | \
           jq -r ".tag_name" > .github/upstream_versions/ctb.txt
 
       - name: Fetch release version
         run: |
-          curl -sL https://api.github.com/repos/tme-test-org/tme-cb-1/releases/latest | \
+          curl -sL https://api.github.com/repos/$ORG_NAME/$CB/releases/latest | \
           jq -r ".tag_name" > test.txt
           cat test.txt
-          echo upstream-version=$(curl -sL https://api.github.com/repos/tme-test-org/tme-cb-1/releases/latest | jq -r ".tag_name") >> $GITHUB_OUTPUT
+          echo upstream-version=$(curl -sL https://api.github.com/repos/$ORG_NAME/$CB/releases/latest | jq -r ".tag_name") >> $GITHUB_OUTPUT
       # - name: Check for modified files
       #   id: git-check
       #   run: echo ::set-output name=modified::$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")
