@@ -18,19 +18,11 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Test env vars
-        run: |
-          echo "Org name: $ORG_NAME"
-          echo "CB: $CB"
-          echo "CTB: $CTB"
-
       - name: Check upstream versions set
         id: check-versions-set
         run: |
-          echo "cb-exists=false" >> $GITHUB_OUTPUT
-          test -f .github/upstream_versions/cb.txt && echo "cb-exists=true" >> $GITHUB_OUTPUT
-          echo "ctb-exists=false" >> $GITHUB_OUTPUT
-          test -f .github/upstream_versions/ctb.txt && echo "ctb-exists=true" >> $GITHUB_OUTPUT
+          test -f .github/upstream_versions/cb.txt && echo "cb-exists=true" >> $GITHUB_OUTPUT || echo "cb-exists=false" >> $GITHUB_OUTPUT
+          test -f .github/upstream_versions/ctb.txt && echo "ctb-exists=true" >> $GITHUB_OUTPUT || echo "ctb-exists=false" >> $GITHUB_OUTPUT
       
       - name: Create cb version file if does not yet exist
         if: steps.check-versions-set.outputs.cb-exists == 'false'
