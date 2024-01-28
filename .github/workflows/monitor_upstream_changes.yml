@@ -40,7 +40,8 @@ jobs:
           jq -r ".tag_name" > .github/upstream_versions/cb.txt
           git config --global user.name 'Automated Script'
           git config --global user.email 'your-email@users.noreply.github.com'
-          git commit -am "Create upstream CB version file."
+          git commit -a .github/upstream_versions/cb.txt
+          git commit -m "Create upstream CB version file."
           git push          
 
       - name: Create ctb version file if does not yet exist
@@ -50,8 +51,8 @@ jobs:
           curl -sL https://api.github.com/repos/$ORG_NAME/$CTB/releases/latest | \
           jq -r ".tag_name" > .github/upstream_versions/ctb.txt
           git config --global user.name 'Automated Script'
-          git config --global user.email 'your-email@users.noreply.github.com'
-          git commit -am "Create upstream CTB version file."
+          git commit -a .github/upstream_versions/ctb.txt
+          git commit -m "Create upstream CTB version file."
           git push          
 
       - name: Fetch release version
