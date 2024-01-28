@@ -1,7 +1,7 @@
 name: Check for upstream changes
 on:
-  schedule:
-    - cron: "*/5 * * * *" #Run check every 5 minutes
+  # schedule:
+    # - cron: "*/5 * * * *" #Run check every 5 minutes
   repository_dispatch:
     types: [coda-action] #Manual triggered from Coda
 
@@ -22,6 +22,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.ref_name }}
 
+      - name: Setup git config
+        run: |
+          git config --global user.email your-email@users.noreply.github.com
+          git config --global user.name 'Pipeline'
+
       - name: Initialize upstream checking
         id: initialize
         run: |
@@ -35,7 +40,6 @@ jobs:
         run: |      
           echo "CB version file does not exist."
           curl -sL https://api.github.com/repos/$ORG_NAME/$CB/releases/latest | jq -r ".tag_name" > .github/upstream_versions/cb.txt
-          git config --global user.name 'Pipeline'
           git add .github/upstream_versions/cb.txt
           git commit -m "Create upstream CB version file."
           git push          
@@ -45,7 +49,6 @@ jobs:
         run: |      
           echo "CTB version file does not exist."
           curl -sL https://api.github.com/repos/$ORG_NAME/$CTB/releases/latest | jq -r ".tag_name" > .github/upstream_versions/ctb.txt
-          git config --global user.name 'Pipeline'
           git add .github/upstream_versions/ctb.txt
           git commit -m "Create upstream CTB version files."
           git push          
@@ -63,7 +66,6 @@ jobs:
         run: |
             echo "New CB version upstream!"
             echo "Set some flag (JIRA? Issue?)"
-            git config --global user.name 'Pipeline'
             touch .github/upstream_versions/cb-change-detected.txt
             git add .github/upstream_versions/cb-change-detected.txt
             git commit -m "Set change detected in CB flag."
@@ -74,8 +76,7 @@ jobs:
         run: |
           echo "New CTB version upstream!"
           echo "Set some flag (JIRA? Issue?)"
-          git config --global user.name 'Pipeline'
           touch .github/upstream_versions/ctb-change-detected.txt
           git add .github/upstream_versions/ctb-change-detected.txt
           git commit -m "Set change detected in CTB flag."
-          git push    
+          git push
