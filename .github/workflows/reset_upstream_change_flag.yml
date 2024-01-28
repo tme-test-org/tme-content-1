@@ -16,7 +16,6 @@ env:
 jobs:
   get-version:
     runs-on: ubuntu-latest
-
     permissions:
       contents: write
 
