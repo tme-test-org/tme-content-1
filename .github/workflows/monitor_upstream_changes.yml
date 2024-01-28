@@ -8,7 +8,7 @@ on:
 env:
   ORG_NAME: ${{ vars.ORG_NAME }}
   CB: ${{ vars.CB }}
-  CBT: ${{ vars.CBT }}
+  CTB: ${{ vars.CTB }}
 
 jobs:
   get-version:
@@ -32,10 +32,8 @@ jobs:
         if: steps.check-versions-set.outputs.cb-exists == 'false'
         run: |      
           echo "CB version file does not exist."
-          curl -sL https://api.github.com/repos/$ORG_NAME/$CB/releases/latest | \
-          jq -r ".tag_name" > .github/upstream_versions/cb.txt
-          git config --global user.name 'Automated Script'
-          git config --global user.email 'your-email@users.noreply.github.com'
+          curl -sL https://api.github.com/repos/$ORG_NAME/$CB/releases/latest | jq -r ".tag_name" > .github/upstream_versions/cb.txt
+          git config --global user.name 'Pipeline'
           git add .github/upstream_versions/cb.txt
           git commit -m "Create upstream CB version file."
           git push          
@@ -44,31 +42,26 @@ jobs:
         if: steps.check-versions-set.outputs.ctb-exists == 'false'
         run: |      
           echo "CTB version file does not exist."
-          curl -sL https://api.github.com/repos/$ORG_NAME/$CTB/releases/latest | \
-          jq -r ".tag_name" > .github/upstream_versions/ctb.txt
-          git config --global user.name 'Automated Script'
-          git config --global user.email 'your-email@users.noreply.github.com'
+          curl -sL https://api.github.com/repos/$ORG_NAME/$CTB/releases/latest | jq -r ".tag_name" > .github/upstream_versions/ctb.txt
+          git config --global user.name 'Pipeline'
           git add .github/upstream_versions/ctb.txt
           git commit -m "Create upstream CTB version files."
           git push          
 
       - name: Fetch release version
+        id: version-compare
         run: |
+          echo cb-repo-version=$(cat .github/upstream_versions/cb.txt) >> $GITHUB_OUTPUT
+          echo ctb-repo-version=$(cat .github/upstream_versions/ctb.txt) >> $GITHUB_OUTPUT
           echo cb-upstream-version=$(curl -sL https://api.github.com/repos/$ORG_NAME/$CB/releases/latest | jq -r ".tag_name") >> $GITHUB_OUTPUT
           echo ctb-upstream-version=$(curl -sL https://api.github.com/repos/$ORG_NAME/$CTB/releases/latest | jq -r ".tag_name") >> $GITHUB_OUTPUT
 
-      # - name: Flag upstream changes
-      #   if: steps.git-check.outputs.modified == 'true'
-      #   run: |
-          
-      # - name: Check for modified files
-      #   id: git-check
-      #   run: echo ::set-output name=modified::$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")
-      # - name: Commit latest release version
-      #   # if: steps.git-check.outputs.modified == 'true'
-      #   run: |
-      #     git config --global user.name 'Your Name'
-      #     git config --global user.email 'your-email@users.noreply.github.com'
-      #     git commit -am "New release version"
-      #     git push
+      - name: CB upstream changes
+        if: steps.version-compare.outputs.cb-repo-version != steps.version-compare.outputs.cb-upstream-version
+        run: |
+            echo "New CB version upstream!"
 
+      - name: CTB upstream changes
+        if: steps.version-compare.outputs.ctb-repo-version != steps.version-compare.outputs.ctb-upstream-version
+        run: |
+            echo "New CTB version upstream!"
