@@ -33,8 +33,8 @@ jobs:
           git config --global user.name 'Pipeline'
           git add .github/upstream_versions/cb.txt
           git add .github/upstream_versions/ctb.txt
-          git rm .github/upstream_versions/cb-change-detected.txt
-          git rm .github/upstream_versions/ctb-change-detected.txt
+          git rm --ignore-unmatch .github/upstream_versions/cb-change-detected.txt
+          git rm --ignore-unmatch .github/upstream_versions/ctb-change-detected.txt
           git commit -m "Reset upstream change flag."
           git push                    
     
