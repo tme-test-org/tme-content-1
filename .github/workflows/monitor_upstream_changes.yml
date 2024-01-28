@@ -1,7 +1,7 @@
 name: Check for upstream changes
 on:
-  # schedule:
-  #   - cron: "*/5 * * * *" #Run check every 5 minutes
+  schedule:
+    - cron: "*/5 * * * *" #Run check every 5 minutes
   repository_dispatch:
     types: [coda-action] #Manual triggered from Coda
 
@@ -15,10 +15,10 @@ jobs:
       # - uses: JasonEtco/create-an-issue@v2
       - name: Fetch release version - test
         run: |
-          curl -L https://api.github.com/repos/tme-test-org/tme-cb-1/releases/releases/latest > test1.txt
+          curl -L https://api.github.com/repos/tme-test-org/tme-cb-1/releases/latest > test1.txt
       - name: Fetch release version
         run: |
-          curl -sL https://api.github.com/repos/tme-test-org/tme-cb-1/releases/releases/latest | \
+          curl -sL https://api.github.com/repos/tme-test-org/tme-cb-1/releases/latest | \
           jq -r ".tag_name" > test.txt
       - name: Show downloaded content
         run: |
