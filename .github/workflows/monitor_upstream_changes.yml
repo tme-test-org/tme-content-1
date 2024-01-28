@@ -15,9 +15,9 @@ jobs:
 
       - name: Test env vars
         run: |
-          echo "Org name: $ORG_NAME"
-          echo "CB: $CB"
-          echo "CTB: $CTB"
+          echo "Org name: env.$ORG_NAME"
+          echo "CB: env.$CB"
+          echo "CTB: env.$CTB"
 
       - name: Check upstream versions set
         id: check-versions-set
@@ -46,7 +46,7 @@ jobs:
           curl -sL https://api.github.com/repos/tme-test-org/tme-cb-1/releases/latest | \
           jq -r ".tag_name" > test.txt
           cat test.txt
-          echo "upstream-version=[ -z "curl -sL https://api.github.com/repos/tme-test-org/tme-cb-1/releases/latest | jq -r ".tag_name" ]" >> $GITHUB_OUTPUT
+          echo upstream-version=$(curl -sL https://api.github.com/repos/tme-test-org/tme-cb-1/releases/latest | jq -r ".tag_name") >> $GITHUB_OUTPUT
       # - name: Check for modified files
       #   id: git-check
       #   run: echo ::set-output name=modified::$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")
