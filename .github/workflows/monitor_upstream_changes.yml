@@ -12,6 +12,25 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check upstream versions set
+        id: check-versions-set
+        run: |
+          echo ::set-output name=cb-exists::false
+          test -f .github/upstream_versions/cb.txt && echo ::set-output name=cb-exists::true
+          echo ::set-output name=ctb-exists::false
+          test -f .github/upstream_versions/ctb.txt && echo ::set-output name=ctb-exists::true
+      
+      - name: Create cb version file
+        if: steps.check-versions-set.outputs.cb-exists == 'false'
+        run: |      
+          echo "CB version file does not exist."
+
+      - name: Create ctb version file
+        if: steps.check-versions-set.outputs.ctb-exists == 'false'
+        run: |      
+          echo "CTB version file does not exist."   
+
       - name: Fetch release version
         run: |
           curl -sL https://api.github.com/repos/tme-test-org/tme-cb-1/releases/latest | \
