@@ -7,6 +7,8 @@ on:
 
 env:
   ORG_NAME: ${{ vars.ORG_NAME }}
+  CB: ${{ vars.CB }}
+  CBT: ${{ vars.CBT }}
 
 jobs:
   get-version:
@@ -21,6 +23,8 @@ jobs:
           echo "Org name: $ORG_NAME"
           echo "CB: $CB"
           echo "CTB: $CTB"
+        env:
+          CBT: ${{ vars.CBT }}    
 
       - name: Check upstream versions set
         id: check-versions-set
