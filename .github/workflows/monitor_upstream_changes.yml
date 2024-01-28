@@ -60,8 +60,20 @@ jobs:
         if: steps.version-compare.outputs.cb-repo-version != steps.version-compare.outputs.cb-upstream-version
         run: |
             echo "New CB version upstream!"
+            echo "Set some flag (JIRA? Issue?)"
+            git config --global user.name 'Pipeline'
+            touch .github/upstream_versions/cb-change-detected.txt
+            git add .github/upstream_versions/cb-change-detected.txt
+            git commit -m "Set change detected in CB flag."
+            git push    
 
       - name: CTB upstream changes
         if: steps.version-compare.outputs.ctb-repo-version != steps.version-compare.outputs.ctb-upstream-version
         run: |
-            echo "New CTB version upstream!"
+          echo "New CTB version upstream!"
+          echo "Set some flag (JIRA? Issue?)"
+          git config --global user.name 'Pipeline'
+          touch .github/upstream_versions/ctb-change-detected.txt
+          git add .github/upstream_versions/ctb-change-detected.txt
+          git commit -m "Set change detected in CTB flag."
+          git push    

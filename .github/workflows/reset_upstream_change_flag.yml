@@ -1,0 +1,40 @@
+#Reset change detected flag when new content is created, or when manually triggered.
+
+name: Reset upstream change flag
+on:
+  release:
+    types:
+      - published
+  repository_dispatch:
+    types: [coda-action] #Manual triggered from Coda
+
+env:
+  ORG_NAME: ${{ vars.ORG_NAME }}
+  CB: ${{ vars.CB }}
+  CTB: ${{ vars.CTB }}
+
+jobs:
+  get-version:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update upstream versions and remove update flag
+        id: check-versions-set
+        run: |
+          curl -sL https://api.github.com/repos/$ORG_NAME/$CB/releases/latest | jq -r ".tag_name" > .github/upstream_versions/cb.txt
+          curl -sL https://api.github.com/repos/$ORG_NAME/$CTB/releases/latest | jq -r ".tag_name" > .github/upstream_versions/ctb.txt
+          git config --global user.name 'Pipeline'
+          git add .github/upstream_versions/cb.txt
+          git add .github/upstream_versions/ctb.txt
+          git rm .github/upstream_versions/cb-change-detected.txt
+          git rm .github/upstream_versions/ctb-change-detected.txt
+          git commit -m "Reset upstream change flag."
+          git push                    
+    
