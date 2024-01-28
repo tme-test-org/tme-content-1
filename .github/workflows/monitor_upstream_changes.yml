@@ -15,19 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      actions: write
-      checks: write
       contents: write
-      deployments: write
-      id-token: write
-      issues: write
-      discussions: write
-      packages: write
-      pages: write
-      pull-requests: write
-      repository-projects: write
-      security-events: write
-      statuses: write
 
     steps:
       - uses: actions/checkout@v4
@@ -66,10 +54,13 @@ jobs:
 
       - name: Fetch release version
         run: |
-          curl -sL https://api.github.com/repos/$ORG_NAME/$CB/releases/latest | \
-          jq -r ".tag_name" > test.txt
-          cat test.txt
-          echo upstream-version=$(curl -sL https://api.github.com/repos/$ORG_NAME/$CB/releases/latest | jq -r ".tag_name") >> $GITHUB_OUTPUT
+          echo cb-upstream-version=$(curl -sL https://api.github.com/repos/$ORG_NAME/$CB/releases/latest | jq -r ".tag_name") >> $GITHUB_OUTPUT
+          echo ctb-upstream-version=$(curl -sL https://api.github.com/repos/$ORG_NAME/$CTB/releases/latest | jq -r ".tag_name") >> $GITHUB_OUTPUT
+
+      # - name: Flag upstream changes
+      #   if: steps.git-check.outputs.modified == 'true'
+      #   run: |
+          
       # - name: Check for modified files
       #   id: git-check
       #   run: echo ::set-output name=modified::$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")
