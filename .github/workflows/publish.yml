@@ -6,7 +6,7 @@ on:
     types:
       - published
   repository_dispatch:
-    types: [coda-action] #Manual triggered from Coda
+    types: [publish] #Manual triggered from Coda
 
 env:
   ORG_NAME: ${{ vars.ORG_NAME }}
