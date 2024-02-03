@@ -5,13 +5,12 @@ on:
     types: [release] #Manual triggered from Coda
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-    - uses: actions/checkout@v3
-    - uses: avakar/tag-and-release@v1
-      with:
-        tag_name: "test"
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Release
+        uses: huggingface/semver-release-action@latest
