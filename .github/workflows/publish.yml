@@ -2,8 +2,6 @@
 
 name: Publish content
 on:
-  release:
-    types: [published]
   repository_dispatch:
     types: [publish] #Manual triggered from Coda
 
