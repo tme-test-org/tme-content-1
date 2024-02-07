@@ -35,14 +35,13 @@ jobs:
           mkdir tmp
           cd tmp
           wget https://raw.githubusercontent.com/$ORG_NAME/$CB/main/README.md
-          mv README.md > cb.txt
+          mv README.md ../cb.txt
           wget https://raw.githubusercontent.com/$ORG_NAME/$CTB/main/README.md
-          mv README.md > ctb.txt
+          mv README.md ../ctb.txt
+          cd ..
       - name: Create draft content with CopyAI
         run: |
           python3 copyai.py
-          mv output.md ../
-          cd ..
       - name: Submit draft to repository
         run: |
           git add output.md
