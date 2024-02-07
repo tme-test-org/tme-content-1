@@ -47,7 +47,9 @@ jobs:
           git config --global user.name 'Pipeline'             
       - name: Submit draft to repository
         run: |
-          git add output.md
+          export COPYAI_OUTPUT=CopyAI_Draft_`date +"%d-%m-%Y-%H:%M:%S"`.md
+          mv output.md $COPYAI_OUTPUT
+          git add $COPYAI_OUTPUT
           git commit -m "Add CopyAI draft."
           git push                          
 
