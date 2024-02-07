@@ -1,10 +1,10 @@
-from pathlib import Path
 import requests
 import json
 import time
 import sys
 import os
 from pdfdocument.document import PDFDocument
+from pathlib import Path
 
 api_key = os.getenv('COPYAI_API_KEY')
 workflow_id = os.getenv('COPYAI_WF_ID')
