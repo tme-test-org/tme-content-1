@@ -41,7 +41,7 @@ jobs:
           cd ..
       - name: Create draft content with CopyAI
         run: |
-          python3 copyai.py
+          python3 .github/copyai/copyai.py
       - name: Submit draft to repository
         run: |
           git add output.md
