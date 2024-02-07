@@ -36,12 +36,9 @@ jobs:
           python-version: '3.10'               
       - name: Prep python
         run: |
-          python3 -m venv copyai
-          source copyai/bin/activate
           sudo pip install -r .github/copyai/requirements.txt
       - name: Create draft content with CopyAI
         run: |
-          source copyai/bin/activate
           cp .github/copyai/copyai.py .
           python3 copyai.py
       - name: Setup git config
