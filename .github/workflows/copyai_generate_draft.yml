@@ -25,22 +25,25 @@ jobs:
           mkdir tmp
           cd tmp
           wget https://raw.githubusercontent.com/$ORG_NAME/$CB/main/README.md
-          mv README.md ../cb.txt
+          mv README.md cb.txt
+          cat cb.txt
           wget https://raw.githubusercontent.com/$ORG_NAME/$CTB/main/README.md
-          mv README.md ../ctb.txt
-          cd ..
+          mv README.md ctb.txt
+          cat.ctb.txt
       - name: Install Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'               
       - name: Create venv
         run: |
+          pwd
           python3 -m venv copyai
           source copyai/bin/activate
       - name: Install requirements
         run: sudo pip install -r .github/copyai/requirements.txt #Where to put scripts?          
       - name: Create draft content with CopyAI
         run: |
+          pwd
           source copyai/bin/activate
           cp .github/copyai/copyai.py .
           python3 copyai.py

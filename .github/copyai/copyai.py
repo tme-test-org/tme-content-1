@@ -11,8 +11,8 @@ workflow_id = os.getenv('COPYAI_WF_ID')
 
 url = f"https://api.copy.ai/api/workflow/{workflow_id}/run"
 
-cb = Path('cb.txt').read_text()
-ctb = Path('ctb.txt').read_text()
+cb = Path('tmp/cb.txt').read_text()
+ctb = Path('tmp/ctb.txt').read_text()
 
 payload = {}
 payload["startVariables"]["main_prompt"] = ctb
