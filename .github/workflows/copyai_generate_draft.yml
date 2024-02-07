@@ -20,16 +20,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4  
-      - name: Install Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'       
-      - name: Setup git config
-        run: |
-          git config --global user.email your-email@users.noreply.github.com
-          git config --global user.name 'Pipeline'          
-      - name: Install requirements
-        run: sudo pip install -r .github/copyai/requirements.txt #Where to put scripts?
       - name: Get upstream meta data
         run: |
           mkdir tmp
@@ -39,9 +29,19 @@ jobs:
           wget https://raw.githubusercontent.com/$ORG_NAME/$CTB/main/README.md
           mv README.md ../ctb.txt
           cd ..
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'               
+      - name: Install requirements
+        run: sudo pip install -r .github/copyai/requirements.txt #Where to put scripts?          
       - name: Create draft content with CopyAI
         run: |
           python3 .github/copyai/copyai.py
+      - name: Setup git config
+        run: |
+          git config --global user.email your-email@users.noreply.github.com
+          git config --global user.name 'Pipeline'             
       - name: Submit draft to repository
         run: |
           git add output.md
