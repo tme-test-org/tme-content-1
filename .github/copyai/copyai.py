@@ -14,29 +14,35 @@ url = f"https://api.copy.ai/api/workflow/{workflow_id}/run"
 cb = Path('cb.txt').read_text()
 ctb = Path('ctb.txt').read_text()
 
-payload = {
-	"startVariables": {
-		"main_prompt": ctb
+payload = {}
+payload["startVariables"]["main_prompt"] = ctb
+payload["startVariables"]["background"] = """You are a technical content writer"""
+payload["startVariables"]["input"] = cb
+payload["metadata"] = {"api": True}
 
-##########################
-### BACKGROUND PROMPT ###
-########################
+# payload = {
+# 	"startVariables": {
+# 		"main_prompt": ctb
+
+# ##########################
+# ### BACKGROUND PROMPT ###
+# ########################
         
-        "background_prompt": """
+#         "background_prompt": """
         
-        You are a technical content writer.
+#         You are a technical content writer.
                 
-        """,
+#         """,
 
 
-###################
-### Text Input ###
-#################
+# ###################
+# ### Text Input ###
+# #################
         
-        "input": cb
-	},
-	"metadata": {"api": True}
-}
+#         "input": cb
+# 	},
+# 	"metadata": {"api": True}
+# }
 headers = {
 	"Content-Type": "application/json",
     "x-copy-ai-api-key": api_key
