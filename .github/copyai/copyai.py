@@ -1,3 +1,4 @@
+from pathlib import Path
 import requests
 import json
 import time
@@ -10,12 +11,12 @@ workflow_id = os.getenv('COPYAI_WF_ID')
 
 url = f"https://api.copy.ai/api/workflow/{workflow_id}/run"
 
-cb = open("cb.txt", "r")
-ctb = open("ctb.txt", "r")
+cb = Path('cb.txt').read_text()
+ctb = Path('ctb.txt').read_text()
 
 payload = {
 	"startVariables": {
-		"main_prompt": ctb.read()
+		"main_prompt": ctb
 
 ##########################
 ### BACKGROUND PROMPT ###
@@ -32,7 +33,7 @@ payload = {
 ### Text Input ###
 #################
         
-        "input": cb.read()
+        "input": cb
 	},
 	"metadata": {"api": True}
 }
