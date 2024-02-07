@@ -32,10 +32,17 @@ jobs:
         run: sudo pip install -r .github/copyai/requirements.txt #Where to put scripts?
       - name: Get upstream meta data
         run: |
-          wget https://api.github.com/repos/$ORG_NAME/$CB/releases/latest cb.txt
-          wget https://api.github.com/repos/$ORG_NAME/$CTB/releases/latest ctb.txt
+          mkdir tmp
+          cd tmp
+          wget https://raw.githubusercontent.com/$ORG_NAME/$CB/main/README.md
+          mv README.md > cb.txt
+          wget https://raw.githubusercontent.com/$ORG_NAME/$CTB/main/README.md
+          mv README.md > ctb.txt
       - name: Create draft content with CopyAI
-        run: python3 copyai.py
+        run: |
+          python3 copyai.py
+          mv output.md ../
+          cd ..
       - name: Submit draft to repository
         run: |
           git add output.md
