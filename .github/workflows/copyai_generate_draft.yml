@@ -37,11 +37,11 @@ jobs:
       - name: Prep python
         run: |
           sudo pip3 install -r .github/copyai/requirements.txt
+          python3 test.py
       - name: Create draft content with CopyAI
         run: |
           cp .github/copyai/copyai.py .
           cp .github/copyai/test.py .
-          python3 test.py
           python3 copyai.py
       - name: Setup git config
         run: |
