@@ -34,10 +34,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'               
-      - name: Prep python
+      - name: Resolve python requirements
         run: |
           pip install -r .github/copyai/requirements.txt
-          python3 .github/copyai/test.py
       - name: Create draft content with CopyAI
         run: |
           cp .github/copyai/copyai.py .
