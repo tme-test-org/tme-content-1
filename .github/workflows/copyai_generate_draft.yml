@@ -38,10 +38,9 @@ jobs:
         run: |
           python3 -m venv copyai
           source copyai/bin/activate
-          sudo pip install -r .github/copyai/requirements.txt #Where to put scripts?          
+          sudo pip install -r .github/copyai/requirements.txt
       - name: Create draft content with CopyAI
         run: |
-          pwd
           source copyai/bin/activate
           cp .github/copyai/copyai.py .
           python3 copyai.py
