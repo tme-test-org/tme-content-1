@@ -23,4 +23,4 @@ jobs:
         with:
           python-version: '3.10'       
       - name: Install requirements
-        run: sudo pip install -r .github/workflows/copyai/requirements.txt #Where to put scripts?
+        run: sudo pip install -r .github/copyai/requirements.txt #Where to put scripts?
