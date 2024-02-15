@@ -1,0 +1,15 @@
+name: CopyAI Generate draft
+
+on: 
+  repository_dispatch:
+    types: [copyai-draft-reusable] #Manual triggered from Coda
+
+jobs:
+  call-copy-ai-workflow:
+    uses: $ORG_NAME/workflows/copyai_generate_draft.yml@main
+    with:
+      ORG_NAME: ${{ vars.ORG_NAME }}
+      CB: ${{ vars.CB }}
+      CTB: ${{ vars.CTB }}
+      COPYAI_WF_ID: ${{ vars.COPYAI_WF_ID }}        
+    secrets: inherit
