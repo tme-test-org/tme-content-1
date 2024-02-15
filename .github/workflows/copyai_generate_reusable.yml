@@ -4,6 +4,9 @@ on:
   repository_dispatch:
     types: [copyai-draft-reusable] #Manual triggered from Coda
 
+env:  
+  ORG_NAME: ${{ vars.ORG_NAME }}
+
 jobs:
   call-copy-ai-workflow:
     uses: $ORG_NAME/workflows/.github/workflows/copyai_generate_draft.yml@main
