@@ -6,6 +6,8 @@ on:
 
 jobs:
   call-copy-ai-workflow:
+    permissions:
+      contents: write    
     uses: tme-test-org/workflows/.github/workflows/copyai_generate_draft.yml@main
     with:
       ORG_NAME: ${{ vars.ORG_NAME }}
