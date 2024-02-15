@@ -22,29 +22,6 @@ payload["startVariables"]["main_prompt"] = ctb
 payload["startVariables"]["background"] = """You are a technical content writer for a software vendor called Aviatrix."""
 payload["startVariables"]["input"] = cb
 
-# payload = {
-# 	"startVariables": {
-# 		"main_prompt": ctb
-
-# ##########################
-# ### BACKGROUND PROMPT ###
-# ########################
-        
-#         "background_prompt": """
-        
-#         You are a technical content writer.
-                
-#         """,
-
-
-# ###################
-# ### Text Input ###
-# #################
-        
-#         "input": cb
-# 	},
-# 	"metadata": {"api": True}
-# }
 headers = {
 	"Content-Type": "application/json",
     "x-copy-ai-api-key": api_key
