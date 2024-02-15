@@ -6,7 +6,7 @@ on:
 
 jobs:
   call-copy-ai-workflow:
-    uses: $ORG_NAME/workflows/copyai_generate_draft.yml@main
+    uses: $ORG_NAME/workflows/.github/workflows/copyai_generate_draft.yml@main
     with:
       ORG_NAME: ${{ vars.ORG_NAME }}
       CB: ${{ vars.CB }}
