@@ -1,0 +1,23 @@
+name: Add Asana Task
+
+on: 
+  repository_dispatch:
+    types: [asana-task] #Manual triggered from Coda
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:    
+    - name: Create Asana task
+      uses: honeycombio/gha-create-asana-task@main
+      with:
+        asana-secret: ${{ secrets.ASANA_PAT }}
+        asana-workspace-id: ${{ secrets.ASANA_WORKSPACE_ID }}
+        asana-project-id: ${{ secrets.ASANA_PROJECT_ID }}
+        asana-section-id: ${{ secrets.ASANA_SECTION_ID }}
+        asana-task-name: My Asana Task
+        asana-task-description: My Asana Description # optional
+        asana-due-date: 2022-12-05 # optional
+        asana-tags: '["123456789"]' # optional
